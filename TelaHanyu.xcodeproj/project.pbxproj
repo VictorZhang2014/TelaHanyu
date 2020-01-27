@@ -75,6 +75,7 @@
 		577D74F623D849EA00D135DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		577D74F823D849EB00D135DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		577D74F923D849EB00D135DB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		57A2151023DECEFA00FCE067 /* THNotificationNameDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THNotificationNameDefines.h; sourceTree = "<group>"; };
 		686E558A574C75B1372E3817 /* Pods-TelaHanyu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelaHanyu.release.xcconfig"; path = "Target Support Files/Pods-TelaHanyu/Pods-TelaHanyu.release.xcconfig"; sourceTree = "<group>"; };
 		CEF24CFDB7052D2DC67FD98A /* Pods-TelaHanyu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelaHanyu.debug.xcconfig"; path = "Target Support Files/Pods-TelaHanyu/Pods-TelaHanyu.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,6 +163,7 @@
 				5704076923D9DB5400BD9511 /* THTabBarViewController.h */,
 				5704076A23D9DB5400BD9511 /* THTabBarViewController.m */,
 				5704076C23D9DBB100BD9511 /* TelaHanyu-Bridging-Header.h */,
+				57A2151023DECEFA00FCE067 /* THNotificationNameDefines.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -243,6 +245,11 @@
 					577D74E623D849E800D135DB = {
 						CreatedOnToolsVersion = 10.2;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

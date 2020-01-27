@@ -4,6 +4,7 @@
 
 
 #import "THLanguageSwitch.h"
+#import "THNotificationNameDefines.h"
 
 
 

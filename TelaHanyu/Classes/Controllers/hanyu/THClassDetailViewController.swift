@@ -63,6 +63,7 @@ class THClassDetailViewController: UIViewController {
         super.viewDidLoad()
         self.title = self.classCourseTitle
         self.view.backgroundColor = UIColor.white
+        self.navigationItem.backBarButtonItem = UIBarButtonItem()
         
         let viewWidth = UIScreen.main.bounds.size.width
         //let viewHeight = UIScreen.main.bounds.size.height
@@ -263,6 +264,11 @@ extension THClassDetailViewController: UITableViewDataSource {
         cell.textLabel?.textColor = UIColor.gray
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         cell.textLabel?.text = item[indexPath.row]
+        if let lastPlayedVideoName = UserDefaults.standard.value(forKey: "LastPlayedVideoName") as? String {
+            if lastPlayedVideoName == item[indexPath.row] {
+                cell.textLabel?.text = "\(item[indexPath.row]) 【最后一次观看】"
+            }
+        }
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -283,11 +289,16 @@ extension THClassDetailViewController: UITableViewDelegate {
         guard let videoUrl = "http://q4i3y1nbm.bkt.clouddn.com/hanyu/video/\(videoName).mp4".encodeUrl() else {
             return
         }
-        print("videoUrl=\(videoUrl)")
+        print("当前正在播放的视频链接地址=\(videoUrl)")
+        
+        // 存储最后一次播放的视频
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(videoName, forKey: "LastPlayedVideoName")
+        userDefaults.synchronize()
         
         let videoPlayerVC = THVideoPlayerViewController()
         videoPlayerVC.videoUrlStr = videoUrl
-        self.navigationController?.pushViewController(videoPlayerVC, animated: true)
+        self.present(videoPlayerVC, animated: false, completion: nil)
     }
     
 }
