@@ -264,10 +264,13 @@ extension THClassDetailViewController: UITableViewDataSource {
         cell.textLabel?.textColor = UIColor.gray
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         cell.textLabel?.text = item[indexPath.row]
+        if let videoPlayingDuration = UserDefaults.standard.value(forKey: item[indexPath.row]) as? String {
+            cell.textLabel?.text = "\(item[indexPath.row]) 【已观看：\(videoPlayingDuration)】"
+        }
         if let lastPlayedVideoName = UserDefaults.standard.value(forKey: "LastPlayedVideoName") as? String {
             if lastPlayedVideoName == item[indexPath.row] {
                 cell.textLabel?.text = "\(item[indexPath.row]) 【最后一次观看】"
-            }
+            } 
         }
         cell.accessoryType = .disclosureIndicator
         return cell
@@ -297,6 +300,7 @@ extension THClassDetailViewController: UITableViewDelegate {
         userDefaults.synchronize()
         
         let videoPlayerVC = THVideoPlayerViewController()
+        videoPlayerVC.videoCourseName = videoName
         videoPlayerVC.videoUrlStr = videoUrl
         self.present(videoPlayerVC, animated: false, completion: nil)
     }

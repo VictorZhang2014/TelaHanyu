@@ -362,6 +362,7 @@ public class THHomeCourseViewController: UIViewController {
         
         self.createBanner()
         self.createTableView()
+        
     }
     
     func createBanner() {

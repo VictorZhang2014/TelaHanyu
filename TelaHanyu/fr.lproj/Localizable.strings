@@ -5,6 +5,7 @@
   Created by victor on 1/23/20.
   Copyright © 2020 Telabytes. All rights reserved.
 */
+"CFBundleDisplayName" = "TelaHanyu";
 "Course Mall" = "Cours Mall";
 "Course Practice" = "Pratique du cours";
 "My Profile" = "Mon profil";

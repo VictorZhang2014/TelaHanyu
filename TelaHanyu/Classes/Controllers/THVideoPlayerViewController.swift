@@ -11,6 +11,7 @@ import AVFoundation
 
 public class THVideoPlayerViewController: UIViewController {
 
+    public var videoCourseName: String = ""
     public var videoUrlStr: String = ""
     private var player: AVPlayer?
     
@@ -22,6 +23,9 @@ public class THVideoPlayerViewController: UIViewController {
     private let slider = UISlider()
     private let timeLabel = UILabel()
     private var periodicTimeObserver: Any?
+    
+    private var watchingVideoCourseTimer: Timer? // 记录用户观看视频的时长的Timer
+    private var watchingVideoCourseTimerTotalSeconds: Int = 0 // 记录用户观看视频的时长
     
     public override var prefersStatusBarHidden: Bool {
         return true
@@ -60,8 +64,6 @@ public class THVideoPlayerViewController: UIViewController {
         self.player?.currentItem?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
         self.player?.currentItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: NSKeyValueObservingOptions.new, context: nil)
         
-        
-        
         self.periodicTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: DispatchQueue.main, using: { [weak self] (time) in
             let current = CMTimeGetSeconds(time)
             if let duration = self?.player?.currentItem?.duration {
@@ -93,8 +95,17 @@ public class THVideoPlayerViewController: UIViewController {
             
         }
         
+        // 计时：记录用户观看这个视频多久了
+        self.watchingVideoCourseTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(recordUserWatchingVideoCourse), userInfo: nil, repeats: true)
+        self.watchingVideoCourseTimer?.fire()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground(_:)), name: NSNotification.Name(rawValue: kNotificationNameAppDidEnterBackground), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground(_:)), name: NSNotification.Name(rawValue: kNotificationNameAppWillEnterForeground), object: nil)
+    }
+    
+    @objc func recordUserWatchingVideoCourse() {
+        self.watchingVideoCourseTimerTotalSeconds += 1
+        print("当前：\(self.watchingVideoCourseTimerTotalSeconds)")
     }
     
     @objc func appDidEnterBackground(_ notification: Notification) {
@@ -190,7 +201,18 @@ public class THVideoPlayerViewController: UIViewController {
     }
     
     @objc func backToVC() {
+        if self.watchingVideoCourseTimerTotalSeconds > 10 {
+            // 当用户观看此视频找过10秒后，才记录起来
+            let t = self.secondsToHoursMinutesSeconds(self.watchingVideoCourseTimerTotalSeconds)
+            let userDefaults = UserDefaults.standard
+            userDefaults.set("\(t.1):\(t.2)", forKey: self.videoCourseName)
+            userDefaults.synchronize()
+        }
+        self.watchingVideoCourseTimer?.invalidate()
+        self.watchingVideoCourseTimer = nil
+        
         self.player?.pause()
+        
         //self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
     }
@@ -252,6 +274,7 @@ public class THVideoPlayerViewController: UIViewController {
         } catch {
             
         }
+        self.player = nil
     }
 
     deinit {
