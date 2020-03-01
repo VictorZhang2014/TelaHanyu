@@ -89,6 +89,8 @@ class THClassDetailViewController: UIViewController {
         }
         
         let playImgView = UIImageView(image: UIImage(named: "PlayIcon"))
+        playImgView.isUserInteractionEnabled = true
+        playImgView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playCourseVideoEvent)))
         classImgView.addSubview(playImgView)
         playImgView.snp.makeConstraints {
             $0.width.height.equalTo(60)
@@ -181,6 +183,17 @@ class THClassDetailViewController: UIViewController {
         }
     }
     
+    @objc func playCourseVideoEvent() {
+        let alertVC = UIAlertController(title: "", message: "请根据以下课程目录进行观看", preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+        self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.tableView.reloadData()
+    }
+    
     @objc func refreshDataList() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
             self.tableView.refreshControl?.endRefreshing()
@@ -266,8 +279,7 @@ extension THClassDetailViewController: UITableViewDataSource {
         cell.textLabel?.text = item[indexPath.row]
         if let videoPlayingDuration = UserDefaults.standard.value(forKey: item[indexPath.row]) as? String {
             cell.textLabel?.text = "\(item[indexPath.row]) 【已观看：\(videoPlayingDuration)】"
-        }
-        if let lastPlayedVideoName = UserDefaults.standard.value(forKey: "LastPlayedVideoName") as? String {
+        } else if let lastPlayedVideoName = UserDefaults.standard.value(forKey: "LastPlayedVideoName") as? String {
             if lastPlayedVideoName == item[indexPath.row] {
                 cell.textLabel?.text = "\(item[indexPath.row]) 【最后一次观看】"
             } 
@@ -289,7 +301,7 @@ extension THClassDetailViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = self.dataList[indexPath.section]
         let videoName = item[indexPath.row]
-        guard let videoUrl = "http://q4i3y1nbm.bkt.clouddn.com/hanyu/video/\(videoName).mp4".encodeUrl() else {
+        guard let videoUrl = "http://cdn.hanyu.telabytes.com/hanyu/video/\(videoName).mp4".encodeUrl() else {
             return
         }
         print("当前正在播放的视频链接地址=\(videoUrl)")
