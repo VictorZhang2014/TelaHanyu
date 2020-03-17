@@ -314,7 +314,7 @@ extension THClassDetailViewController: UITableViewDelegate {
         let videoPlayerVC = THVideoPlayerViewController()
         videoPlayerVC.videoCourseName = videoName
         videoPlayerVC.videoUrlStr = videoUrl
-        self.present(videoPlayerVC, animated: false, completion: nil)
+        self.navigationController?.pushViewController(videoPlayerVC, animated: false) 
     }
     
 }

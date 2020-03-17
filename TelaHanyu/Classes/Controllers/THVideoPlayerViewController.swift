@@ -213,8 +213,7 @@ public class THVideoPlayerViewController: UIViewController {
         
         self.player?.pause()
         
-        //self.navigationController?.popViewController(animated: true)
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: false)
     }
     
     @objc func pauseVideoBtn() {
