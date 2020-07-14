@@ -131,10 +131,11 @@ public class THVideoPlayerViewController: UIViewController {
         let backBtn = UIButton()
         backBtn.addTarget(self, action: #selector(backToVC), for: .touchUpInside)
         backBtn.setImage(UIImage(named: "BackIcon"), for: .normal)
+        backBtn.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         self.videoOverlayView.addSubview(backBtn)
         backBtn.snp.makeConstraints {
-            $0.top.left.equalTo(20)
-            $0.width.height.equalTo(30)
+            $0.top.left.equalTo(0)
+            $0.width.height.equalTo(70)
         }
         
         let bottomView = UIView()
@@ -154,10 +155,11 @@ public class THVideoPlayerViewController: UIViewController {
         
         self.pauseBtn.setImage(UIImage(named: "PauseIcon"), for: .normal)
         self.pauseBtn.addTarget(self, action: #selector(pauseVideoBtn), for: .touchUpInside)
+        self.pauseBtn.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         bottomView.addSubview(self.pauseBtn)
         self.pauseBtn.snp.makeConstraints {
-            $0.top.left.equalTo(5)
-            $0.width.height.equalTo(35)
+            $0.top.left.bottom.equalTo(0)
+            $0.width.equalTo(45)
         }
         
         self.slider.addTarget(self, action: #selector(onChangeSliderValue(_:)), for: .valueChanged)
@@ -213,6 +215,7 @@ public class THVideoPlayerViewController: UIViewController {
         
         self.player?.pause()
         
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationController?.popViewController(animated: false)
     }
     
